@@ -91,6 +91,7 @@ public class MapDemoActivity extends AppCompatActivity implements GoogleMap.OnMa
                 public void onMapReady(GoogleMap map) {
                     loadMap(map);
                     map.setInfoWindowAdapter(new CustomWindowAdapter(getLayoutInflater()));
+                    map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
                 }
             });
