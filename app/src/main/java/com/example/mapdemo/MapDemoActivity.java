@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
@@ -43,6 +44,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.maps.android.ui.IconGenerator;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
@@ -277,20 +279,27 @@ public class MapDemoActivity extends AppCompatActivity implements GoogleMap.OnMa
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Define color of marker icon
-                        BitmapDescriptor defaultMarker =
-                                BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
                         // Extract content from alert dialog
                         String title = ((EditText) alertDialog.findViewById(R.id.etTitle)).
                                 getText().toString();
                         String snippet = ((EditText) alertDialog.findViewById(R.id.etSnippet)).
                                 getText().toString();
+
+                        // Define color of marker icon
+                        IconGenerator iconGenerator = new IconGenerator(MapDemoActivity.this);
+                        iconGenerator.setStyle(IconGenerator.STYLE_RED);
+                        Bitmap bitmap = iconGenerator.makeIcon(title);
+                        BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(bitmap);
+//                        BitmapDescriptor defaultMarker =
+////                                BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
+//                                BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher);
+
                         // Creates and adds marker to the map
                         Marker marker = map.addMarker(new MarkerOptions()
                                 .position(latLng)
                                 .title(title)
                                 .snippet(snippet)
-                                .icon(defaultMarker));
+                                .icon(icon));
 
                         dropPinEffect(marker);
                     }
